@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.example.todolist_compose.ui.theme.Black
 import com.example.todolist_compose.ui.theme.DarkGray
 import com.example.todolist_compose.ui.theme.Gray
+import com.example.todolist_compose.ui.theme.IceWhite
 import com.example.todolist_compose.ui.theme.Secondary
 
 @Composable
@@ -29,7 +30,7 @@ fun TripleSwitch(modifier: Modifier = Modifier){
         modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(28.dp))
-            .background(Secondary)
+            .background(IceWhite)
             .padding(4.dp)
     ) {
         categories.forEachIndexed{ index, description ->
