@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,29 +27,31 @@ import com.example.todolist_compose.ui.theme.Secondary
 fun TripleSwitch(modifier: Modifier = Modifier){
     val selectedIndex = 0
     val categories = listOf("Pendentes","Em progresso","Terminados")
-    Row(
-        modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(28.dp))
-            .background(IceWhite)
-            .padding(4.dp)
+    Card(
+        modifier = modifier.clip(RoundedCornerShape(12.dp))
     ) {
-        categories.forEachIndexed{ index, description ->
-            Text(
-                text = description,
-                textAlign = TextAlign.Center,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
-                color = if (index == selectedIndex) Black else DarkGray,
-                modifier = Modifier
-                    .weight(1f)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(
-                        if (index == selectedIndex) Color.White
-                        else Color.Transparent
-                    )
-                    .padding(vertical = 4.dp)
-            )
+        Row(
+            modifier
+                .fillMaxWidth()
+                .padding(4.dp)
+        ) {
+            categories.forEachIndexed{ index, description ->
+                Text(
+                    text = description,
+                    textAlign = TextAlign.Center,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = if (index == selectedIndex) Black else DarkGray,
+                    modifier = Modifier
+                        .weight(1f)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(
+                            if (index == selectedIndex) Color.White
+                            else Color.Transparent
+                        )
+                        .padding(vertical = 4.dp)
+                )
+            }
         }
     }
 }
