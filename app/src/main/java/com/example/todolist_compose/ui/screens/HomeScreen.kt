@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.todolist_compose.localNavController
 import com.example.todolist_compose.ui.components.AppBottomBar
 import com.example.todolist_compose.ui.components.HomeTopBar
 import com.example.todolist_compose.ui.components.TripleSwitch
@@ -40,13 +41,15 @@ import com.example.todolist_compose.ui.theme.ToDOListComposeTheme
 @Preview(showBackground = true)
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier){
+    val navController = localNavController.current
     ToDOListComposeTheme{
         Scaffold(
             topBar = {
                 HomeTopBar(modifier.padding(horizontal = 12.dp))
             },
             bottomBar = {
-                AppBottomBar(text = "Create task",{})
+                AppBottomBar(text = "Create task"
+                ) { navController.navigate("newTask") }
             }
         ) { paddingValues ->
             Column(
