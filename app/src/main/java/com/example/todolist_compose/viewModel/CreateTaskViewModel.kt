@@ -14,7 +14,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CreateTaskViewModel(val taskDao:TaskDao, val navController: NavHostController):ViewModel() {
+class CreateTaskViewModel(
+    private val taskDao:TaskDao,
+    private val navController: NavHostController
+):ViewModel() {
     val state = MutableStateFlow(TaskState())
 
     fun onEvent(event:CreateTaskEvents){
@@ -41,8 +44,17 @@ class CreateTaskViewModel(val taskDao:TaskDao, val navController: NavHostControl
                     taskStatus = event.taskStatus
                 ) }
             }
+            is CreateTaskEvents.setExpirationDate -> {
+                state.update { it.copy(
+                    expirationDate = event.expirationDate
+                ) }
+            }
             CreateTaskEvents.createTask -> {
-                val task = Task(state.value.title, state.value.description, state.value.taskStatus)
+                val task = Task(
+                    state.value.title,
+                    state.value.description,
+                    state.value.taskStatus,
+                    state.value.expirationDate)
                 viewModelScope.launch {
                     taskDao.upsertTask(task)
                 }

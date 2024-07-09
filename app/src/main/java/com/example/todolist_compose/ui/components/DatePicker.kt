@@ -23,6 +23,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.todolist_compose.events.CreateTaskEvents
 import com.example.todolist_compose.ui.theme.Black
 import com.example.todolist_compose.ui.theme.Primary
 import java.text.SimpleDateFormat
@@ -41,28 +43,20 @@ import java.util.Locale
 import java.util.TimeZone
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
-fun DatePickerComponent(){
+fun DatePickerComponent(expirationDate:Long, onEvent:(CreateTaskEvents)->Unit){
     var showDateDialog by remember {
         mutableStateOf(false)
     }
-    var showTimeDialog by remember {
-        mutableStateOf(false)
-    }
-    var selectedDate by remember {
-        mutableStateOf("")
-    }
     val datePickerState = rememberDatePickerState()
-    val timePickerState = rememberTimePickerState()
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = "Data de término",
             modifier = Modifier.padding(start = 8.dp)
         )
         OutlinedTextField(
-            value = selectedDate,
-            onValueChange = { selectedDate = selectedDate },
+            value = expirationDate.toBrazilianDateFormat(),
+            onValueChange = { },
             singleLine = true,
             readOnly = true,
             textStyle = TextStyle(
@@ -96,7 +90,7 @@ fun DatePickerComponent(){
                     onClick = {
                         datePickerState
                             .selectedDateMillis?.let { millis ->
-                                selectedDate = millis.toBrazilianDateFormat()
+                                onEvent(CreateTaskEvents.setExpirationDate(millis))
                             }
                         showDateDialog = false
                     }) {

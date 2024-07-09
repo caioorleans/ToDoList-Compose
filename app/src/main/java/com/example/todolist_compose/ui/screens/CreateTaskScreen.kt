@@ -9,7 +9,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todolist_compose.events.CreateTaskEvents
 import com.example.todolist_compose.state.TaskState
@@ -31,11 +30,16 @@ fun CreateTaskScreen(
         Scaffold(
             topBar = {
                 OtherTopAppBar(
-                    modifier = Modifier.padding(horizontal = 12.dp)
+                    modifier = Modifier.padding(horizontal = 12.dp),
+                    goBackAction = { onEvent(CreateTaskEvents.goToPreviousPage) },
+                    clearAction = {onEvent(CreateTaskEvents.ClearValues)}
                 )
             },
             bottomBar = {
-                AppBottomBar(text = "Criar Task") { onEvent(CreateTaskEvents.createTask) }
+                AppBottomBar(
+                    text = "Criar Task",
+                    enabled = state.title.isNotBlank() && state.description.isNotBlank()
+                ) { onEvent(CreateTaskEvents.createTask) }
             }
         ) { paddingValues ->
             Column(
@@ -62,7 +66,7 @@ fun CreateTaskScreen(
                     )
                 }
                 StatusField(state.taskStatus,onEvent)
-                DatePickerComponent()
+                DatePickerComponent(state.expirationDate, onEvent)
             }
         }
     }

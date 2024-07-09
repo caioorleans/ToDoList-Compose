@@ -8,6 +8,7 @@ data class Task(
     val title:String,
     val description:String,
     val status: TaskStatus,
+    val expirationDate:Long,
     @PrimaryKey(autoGenerate = true)
     val id:Int? = null
 )

@@ -1,6 +1,7 @@
 package com.example.todolist_compose.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.todolist_compose.events.HomeEvents
+import com.example.todolist_compose.model.TaskStatus
+import com.example.todolist_compose.state.HomeState
 import com.example.todolist_compose.ui.theme.Black
 import com.example.todolist_compose.ui.theme.DarkGray
 import com.example.todolist_compose.ui.theme.Gray
@@ -23,10 +27,8 @@ import com.example.todolist_compose.ui.theme.IceWhite
 import com.example.todolist_compose.ui.theme.Secondary
 
 @Composable
-@Preview
-fun TripleSwitch(modifier: Modifier = Modifier){
+fun TripleSwitch(state: HomeState, onEvent:(HomeEvents)->Unit,modifier: Modifier = Modifier){
     val selectedIndex = 0
-    val categories = listOf("Pendentes","Em progresso","Terminados")
     Card(
         modifier = modifier.clip(RoundedCornerShape(12.dp))
     ) {
@@ -35,18 +37,19 @@ fun TripleSwitch(modifier: Modifier = Modifier){
                 .fillMaxWidth()
                 .padding(4.dp)
         ) {
-            categories.forEachIndexed{ index, description ->
+            for(status in TaskStatus.entries){
                 Text(
-                    text = description,
+                    text = status.value,
                     textAlign = TextAlign.Center,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    color = if (index == selectedIndex) Black else DarkGray,
+                    color = if (status == state.selectedTaskState) Black else DarkGray,
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(8.dp))
+                        .clickable { onEvent(HomeEvents.SortTasks(status)) }
                         .background(
-                            if (index == selectedIndex) Color.White
+                            if (status == state.selectedTaskState) Color.White
                             else Color.Transparent
                         )
                         .padding(vertical = 4.dp)

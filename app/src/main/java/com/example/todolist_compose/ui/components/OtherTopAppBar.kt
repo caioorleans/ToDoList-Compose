@@ -1,5 +1,6 @@
 package com.example.todolist_compose.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,7 +16,11 @@ import com.example.todolist_compose.ui.theme.Primary
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun OtherTopAppBar(modifier: Modifier = Modifier) {
+fun OtherTopAppBar(
+    modifier: Modifier = Modifier,
+    goBackAction:()->Unit = {},
+    clearAction: ()->Unit = {}
+) {
     CenterAlignedTopAppBar(
         title = {
             Text(
@@ -23,8 +28,16 @@ fun OtherTopAppBar(modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Bold
             )
         },
-        actions = { Text(text = "Limpar") },
-        navigationIcon = { Text(text = "Voltar") },
+        actions = { Text(
+            text = "Limpar",
+            modifier = Modifier.clickable { clearAction() }
+        ) },
+        navigationIcon = {
+            Text(
+                text = "Voltar",
+                modifier = Modifier.clickable { goBackAction() }
+            )
+        },
         colors = TopAppBarColors(
             titleContentColor = Black,
             actionIconContentColor = Primary,

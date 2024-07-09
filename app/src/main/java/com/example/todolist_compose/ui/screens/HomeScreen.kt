@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,10 +24,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.todolist_compose.events.HomeEvents
 import com.example.todolist_compose.localNavController
+import com.example.todolist_compose.model.Task
+import com.example.todolist_compose.state.HomeState
 import com.example.todolist_compose.ui.components.AppBottomBar
 import com.example.todolist_compose.ui.components.HomeTopBar
 import com.example.todolist_compose.ui.components.TripleSwitch
@@ -38,10 +39,12 @@ import com.example.todolist_compose.ui.theme.DarkGray
 import com.example.todolist_compose.ui.theme.Secondary
 import com.example.todolist_compose.ui.theme.ToDOListComposeTheme
 
-@Preview(showBackground = true)
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier){
-    val navController = localNavController.current
+fun HomeScreen(
+    state:HomeState,
+    onEvent:(HomeEvents)->Unit,
+    modifier: Modifier = Modifier
+){
     ToDOListComposeTheme{
         Scaffold(
             topBar = {
@@ -49,7 +52,7 @@ fun HomeScreen(modifier: Modifier = Modifier){
             },
             bottomBar = {
                 AppBottomBar(text = "Create task"
-                ) { navController.navigate("newTask") }
+                ) { onEvent(HomeEvents.GoToCreateTask) }
             }
         ) { paddingValues ->
             Column(
@@ -57,27 +60,16 @@ fun HomeScreen(modifier: Modifier = Modifier){
                     .padding(paddingValues)
                     .padding(horizontal = 12.dp)
             ) {
-                HomeBody(itens = listOf(
-                    "Fazer limpeza da casa",
-                    "Fazer limpeza da casa",
-                    "Fazer limpeza da casa",
-                    "Fazer limpeza da casa",
-                    "Fazer limpeza da casa",
-                    "Fazer limpeza da casa",
-                    "Fazer limpeza da casa",
-                    "Fazer limpeza da casa",
-                    "Fazer limpeza da casa",
-                    "Fazer limpeza da casa"
-                ))
+                HomeBody(state = state, onEvent = onEvent)
             }
         }
     }
 }
 
 @Composable
-fun HomeBody(modifier: Modifier = Modifier, itens:List<String> = emptyList()){
-    TripleSwitch()
-    if (itens.isEmpty()){
+fun HomeBody(state: HomeState, onEvent:(HomeEvents)->Unit, modifier: Modifier = Modifier){
+    TripleSwitch(state, onEvent)
+    if (state.tasks.isEmpty()){
         EmptyListMessage(text = "É aqui que você encontrará seus projetos finalizados.")
     }
     else {
@@ -104,13 +96,13 @@ fun HomeBody(modifier: Modifier = Modifier, itens:List<String> = emptyList()){
                     )
                 }
             }
-            items(itens){ item ->
+            items(state.tasks){ item ->
                 OutlinedCard(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = item,
+                        text = item.title,
                         fontSize = 14.sp,
                         color = Black,
                         modifier = Modifier.padding(12.dp)

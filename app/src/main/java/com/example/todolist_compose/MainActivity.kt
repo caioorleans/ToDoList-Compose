@@ -20,6 +20,7 @@ import androidx.room.Room
 import com.example.todolist_compose.ui.screens.CreateTaskScreen
 import com.example.todolist_compose.ui.screens.HomeScreen
 import com.example.todolist_compose.viewModel.CreateTaskViewModel
+import com.example.todolist_compose.viewModel.HomeViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -49,7 +50,17 @@ fun nav(taskDatabase: TaskDatabase){
     CompositionLocalProvider(localNavController provides navController) {
         NavHost(navController = navController, startDestination = "home"){
             composable("home"){
-                HomeScreen()
+                val viewModel = viewModel<HomeViewModel>(
+                    factory = object :ViewModelProvider.Factory{
+                        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                            return HomeViewModel(
+                                taskDatabase.dao, navController
+                            ) as T
+                        }
+                    }
+                )
+                val state by viewModel.state.collectAsState()
+                HomeScreen(state, viewModel::onEvent)
             }
             composable("newTask"){
                 val viewModel = viewModel<CreateTaskViewModel>(
