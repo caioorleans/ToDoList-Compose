@@ -2,6 +2,7 @@ package com.example.todolist_compose.ui.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -12,16 +13,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.example.todolist_compose.events.CreateTaskEvents
+import com.example.todolist_compose.ui.theme.Black
 
 @Composable
-fun CustomTextField(){
+fun CustomTextField(
+    textField:String,
+    onEvent:(CreateTaskEvents) -> Unit
+){
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Título")
+        Text(
+            text = "Título",
+            modifier = Modifier.padding(start = 8.dp)
+        )
         OutlinedTextField(
-            value = "Olá",
-            onValueChange = {it},
+            value = textField,
+            onValueChange = {onEvent(CreateTaskEvents.SetTitle(it))},
             textStyle = TextStyle(textAlign = TextAlign.Right),
             colors = OutlinedTextFieldDefaults.colors(
                 disabledBorderColor = Color.Transparent,
@@ -30,6 +40,8 @@ fun CustomTextField(){
                 disabledContainerColor = Color.Transparent,
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
+                unfocusedTextColor = Black,
+                focusedTextColor = Black
             ),
             modifier = Modifier.fillMaxWidth()
         )

@@ -1,5 +1,6 @@
 package com.example.todolist_compose.ui.components
 
+import android.app.TimePickerDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -17,7 +18,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +29,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todolist_compose.ui.theme.Black
@@ -39,26 +44,36 @@ import java.util.TimeZone
 @Preview
 @Composable
 fun DatePickerComponent(){
-    var showDialog by remember {
+    var showDateDialog by remember {
+        mutableStateOf(false)
+    }
+    var showTimeDialog by remember {
         mutableStateOf(false)
     }
     var selectedDate by remember {
         mutableStateOf("")
     }
     val datePickerState = rememberDatePickerState()
+    val timePickerState = rememberTimePickerState()
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(text = "Data de término")
+        Text(
+            text = "Data de término",
+            modifier = Modifier.padding(start = 8.dp)
+        )
         OutlinedTextField(
             value = selectedDate,
             onValueChange = { selectedDate = selectedDate },
             singleLine = true,
             readOnly = true,
+            textStyle = TextStyle(
+                textAlign = TextAlign.End
+            ),
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Filled.DateRange,
                     contentDescription = "Select date",
                     modifier = Modifier
-                        .clickable { showDialog = true }
+                        .clickable { showDateDialog = true }
                 )
             },
             colors = OutlinedTextFieldDefaults.colors(
@@ -68,13 +83,14 @@ fun DatePickerComponent(){
                 disabledContainerColor = Color.Transparent,
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
-                focusedTextColor = Black
+                focusedTextColor = Black,
+                unfocusedTextColor = Black
             )
         )
     }
-    if(showDialog){
+    if(showDateDialog){
         DatePickerDialog(
-            onDismissRequest = { showDialog = false },
+            onDismissRequest = { showDateDialog = false },
             confirmButton = {
                 Button(
                     onClick = {
@@ -82,7 +98,7 @@ fun DatePickerComponent(){
                             .selectedDateMillis?.let { millis ->
                                 selectedDate = millis.toBrazilianDateFormat()
                             }
-                        showDialog = false
+                        showDateDialog = false
                     }) {
                     Text(text = "Escolher data")
                 }

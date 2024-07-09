@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -25,23 +26,25 @@ fun CustomDrawer(title:String, action: @Composable ()->Unit = {}){
     var isOpen by remember {
         mutableStateOf(false)
     }
+    val modifier = Modifier.clickable { isOpen = !isOpen}
     Row(
+
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .defaultMinSize(minHeight = 60.dp)
     ) {
-        val modifier = Modifier.clickable { isOpen = !isOpen}
+
         Text(
             text = title,
-            modifier = modifier
+            modifier = Modifier.padding(start = 8.dp)
         )
         Icon(
             imageVector = if(isOpen) Icons.Filled.KeyboardArrowUp
                 else  Icons.Filled.KeyboardArrowDown,
             contentDescription = "Open",
-            modifier = modifier
+            modifier = Modifier.padding(end = 12.dp)
         )
     }
     if (isOpen){

@@ -6,20 +6,36 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
 import com.example.todolist_compose.ui.screens.CreateTaskScreen
 import com.example.todolist_compose.ui.screens.HomeScreen
+import com.example.todolist_compose.viewModel.CreateTaskViewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val db by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            TaskDatabase::class.java,
+            "task.db"
+        ).build()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            nav()
+            nav(db)
         }
     }
 }
@@ -28,7 +44,7 @@ val localNavController = compositionLocalOf<NavHostController> {
     error("NavController not provided") }
 
 @Composable
-fun nav(){
+fun nav(taskDatabase: TaskDatabase){
     val navController = rememberNavController()
     CompositionLocalProvider(localNavController provides navController) {
         NavHost(navController = navController, startDestination = "home"){
@@ -36,7 +52,17 @@ fun nav(){
                 HomeScreen()
             }
             composable("newTask"){
-                CreateTaskScreen()
+                val viewModel = viewModel<CreateTaskViewModel>(
+                    factory = object :ViewModelProvider.Factory{
+                        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                            return CreateTaskViewModel(
+                                taskDatabase.dao, navController
+                            ) as T
+                        }
+                    }
+                )
+                val state by viewModel.state.collectAsState()
+                CreateTaskScreen(state, viewModel::onEvent)
             }
         }
     }
