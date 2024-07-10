@@ -33,11 +33,7 @@ import com.example.todolist_compose.state.HomeState
 import com.example.todolist_compose.ui.components.AppBottomBar
 import com.example.todolist_compose.ui.components.HomeTopBar
 import com.example.todolist_compose.ui.components.TripleSwitch
-import com.example.todolist_compose.ui.theme.BabyBlue
-import com.example.todolist_compose.ui.theme.Black
-import com.example.todolist_compose.ui.theme.DarkGray
-import com.example.todolist_compose.ui.theme.Secondary
-import com.example.todolist_compose.ui.theme.ToDOListComposeTheme
+import com.example.todolist_compose.ui.theme.AppTheme
 
 @Composable
 fun HomeScreen(
@@ -45,7 +41,7 @@ fun HomeScreen(
     onEvent:(HomeEvents)->Unit,
     modifier: Modifier = Modifier
 ){
-    ToDOListComposeTheme{
+    AppTheme{
         Scaffold(
             topBar = {
                 HomeTopBar(modifier.padding(horizontal = 12.dp))
@@ -85,14 +81,12 @@ fun HomeBody(state: HomeState, onEvent:(HomeEvents)->Unit, modifier: Modifier = 
                 ) {
                     Text(
                         text = "Lista",
-                        color = Black,
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
                         text = "Itens marcados como concluídos",
-                        color = DarkGray
                     )
                 }
             }
@@ -104,7 +98,6 @@ fun HomeBody(state: HomeState, onEvent:(HomeEvents)->Unit, modifier: Modifier = 
                     Text(
                         text = item.title,
                         fontSize = 14.sp,
-                        color = Black,
                         modifier = Modifier.padding(12.dp)
                     )
                 }
@@ -122,9 +115,7 @@ fun EmptyListMessage(text:String, modifier:Modifier = Modifier){
         modifier = modifier.fillMaxSize()
     ) {
         Card(
-            colors = CardDefaults.cardColors(
-                containerColor = Secondary
-            ),
+            colors = CardDefaults.cardColors(),
             modifier = Modifier
                 .padding(20.dp)
                 .size(100.dp)
@@ -132,7 +123,6 @@ fun EmptyListMessage(text:String, modifier:Modifier = Modifier){
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.List,
                 contentDescription = null,
-                tint = BabyBlue,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(30.dp)

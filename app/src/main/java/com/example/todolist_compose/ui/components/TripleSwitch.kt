@@ -20,11 +20,6 @@ import androidx.compose.ui.unit.sp
 import com.example.todolist_compose.events.HomeEvents
 import com.example.todolist_compose.model.TaskStatus
 import com.example.todolist_compose.state.HomeState
-import com.example.todolist_compose.ui.theme.Black
-import com.example.todolist_compose.ui.theme.DarkGray
-import com.example.todolist_compose.ui.theme.Gray
-import com.example.todolist_compose.ui.theme.IceWhite
-import com.example.todolist_compose.ui.theme.Secondary
 
 @Composable
 fun TripleSwitch(state: HomeState, onEvent:(HomeEvents)->Unit,modifier: Modifier = Modifier){
@@ -43,7 +38,7 @@ fun TripleSwitch(state: HomeState, onEvent:(HomeEvents)->Unit,modifier: Modifier
                     textAlign = TextAlign.Center,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    color = if (status == state.selectedTaskState) Black else DarkGray,
+                    color = if (status == state.selectedTaskState) Color.Black else Color.DarkGray,
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(8.dp))

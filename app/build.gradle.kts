@@ -51,6 +51,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.ui.text.google.fonts)
     val room_version = "2.6.1"
 
     implementation("androidx.room:room-ktx:$room_version")
