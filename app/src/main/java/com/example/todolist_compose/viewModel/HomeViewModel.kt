@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModel(
@@ -45,7 +46,11 @@ class HomeViewModel(
                 _status.update { event.taskStatus }
             }
             is HomeEvents.GoToEditTask -> TODO()
-            is HomeEvents.DeleteTask -> TODO()
+            is HomeEvents.DeleteTask -> {
+                viewModelScope.launch {
+                    taskDao.deleteTask(event.task)
+                }
+            }
         }
     }
 }

@@ -102,7 +102,7 @@ fun DatePickerComponent(expirationDate:Long, onEvent:(CreateTaskEvents)->Unit){
     HorizontalDivider()
 }
 
-private fun Long.toBrazilianDateFormat(
+fun Long.toBrazilianDateFormat(
     pattern: String = "dd/MM/yyyy"
 ): String {
     val date = Date(this)
