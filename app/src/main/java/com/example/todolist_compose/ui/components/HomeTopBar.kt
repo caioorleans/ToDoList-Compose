@@ -15,9 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.todolist_compose.ui.theme.Black
-import com.example.todolist_compose.ui.theme.Primary
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
@@ -30,13 +27,6 @@ fun HomeTopBar(modifier: Modifier = Modifier){
             )
         },
         actions = {Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")},
-        colors = TopAppBarColors(
-            titleContentColor = Black,
-            actionIconContentColor = Primary,
-            containerColor = Color.Transparent,
-            scrolledContainerColor = Color.Transparent,
-            navigationIconContentColor = Primary
-        ),
         modifier = modifier
             .padding(bottom = 12.dp)
     )

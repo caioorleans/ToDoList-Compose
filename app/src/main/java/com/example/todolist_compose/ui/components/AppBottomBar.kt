@@ -29,9 +29,6 @@ fun AppBottomBar(text: String, enabled:Boolean = true, action: ()->Unit) {
             onClick = { action() },
             enabled = enabled,
             shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(
-                disabledContainerColor = Color.LightGray
-            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 12.dp)

@@ -15,7 +15,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.todolist_compose.events.CreateTaskEvents
-import com.example.todolist_compose.ui.theme.Black
 
 @Composable
 fun CustomTextField(
@@ -40,8 +39,6 @@ fun CustomTextField(
                 disabledContainerColor = Color.Transparent,
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
-                unfocusedTextColor = Black,
-                focusedTextColor = Black
             ),
             modifier = Modifier.fillMaxWidth()
         )

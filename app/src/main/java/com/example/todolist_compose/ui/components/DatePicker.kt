@@ -35,8 +35,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todolist_compose.events.CreateTaskEvents
-import com.example.todolist_compose.ui.theme.Black
-import com.example.todolist_compose.ui.theme.Primary
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -77,8 +75,6 @@ fun DatePickerComponent(expirationDate:Long, onEvent:(CreateTaskEvents)->Unit){
                 disabledContainerColor = Color.Transparent,
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
-                focusedTextColor = Black,
-                unfocusedTextColor = Black
             )
         )
     }
@@ -99,10 +95,7 @@ fun DatePickerComponent(expirationDate:Long, onEvent:(CreateTaskEvents)->Unit){
             }) {
             DatePicker(
                 state = datePickerState,
-                colors = DatePickerDefaults.colors(
-                    dayContentColor = Black,
-                    weekdayContentColor = Primary
-                )
+                colors = DatePickerDefaults.colors()
             )
         }
     }

@@ -18,15 +18,14 @@ import com.example.todolist_compose.ui.components.CustomTextField
 import com.example.todolist_compose.ui.components.DatePickerComponent
 import com.example.todolist_compose.ui.components.OtherTopAppBar
 import com.example.todolist_compose.ui.components.StatusField
-import com.example.todolist_compose.ui.theme.Black
-import com.example.todolist_compose.ui.theme.ToDOListComposeTheme
+import com.example.todolist_compose.ui.theme.AppTheme
 
 @Composable
 fun CreateTaskScreen(
     state:TaskState,
     onEvent:(CreateTaskEvents)->Unit
 ){
-    ToDOListComposeTheme {
+    AppTheme {
         Scaffold(
             topBar = {
                 OtherTopAppBar(
@@ -59,8 +58,6 @@ fun CreateTaskScreen(
                             disabledContainerColor = Color.Transparent,
                             focusedContainerColor = Color.Transparent,
                             unfocusedContainerColor = Color.Transparent,
-                            unfocusedTextColor = Black,
-                            focusedTextColor = Black
                         ),
                         modifier = Modifier.fillMaxWidth()
                     )

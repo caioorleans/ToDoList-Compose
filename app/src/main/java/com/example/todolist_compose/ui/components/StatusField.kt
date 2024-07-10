@@ -13,8 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.todolist_compose.events.CreateTaskEvents
 import com.example.todolist_compose.model.TaskStatus
-import com.example.todolist_compose.ui.theme.OnPrimary
-import com.example.todolist_compose.ui.theme.Primary
 
 @Composable
 fun StatusField(
@@ -34,10 +32,7 @@ fun StatusField(
                 selected = taskStatus == status,
                 onClick = { onEvent(CreateTaskEvents.setStatus(status)) },
                 label = { Text(text = status.value) },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedLabelColor = OnPrimary,
-                    selectedContainerColor = Primary
-                )
+                colors = FilterChipDefaults.filterChipColors()
             )
         }
     }
