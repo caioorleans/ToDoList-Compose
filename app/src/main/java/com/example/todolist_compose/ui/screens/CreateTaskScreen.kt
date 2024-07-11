@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.todolist_compose.events.CreateTaskEvents
 import com.example.todolist_compose.state.TaskState
 import com.example.todolist_compose.ui.components.AppBottomBar
@@ -23,6 +24,7 @@ import com.example.todolist_compose.ui.theme.AppTheme
 @Composable
 fun CreateTaskScreen(
     state:TaskState,
+    navController:NavHostController,
     onEvent:(CreateTaskEvents)->Unit
 ){
     AppTheme {
@@ -30,7 +32,7 @@ fun CreateTaskScreen(
             topBar = {
                 OtherTopAppBar(
                     modifier = Modifier.padding(horizontal = 12.dp),
-                    goBackAction = { onEvent(CreateTaskEvents.goToPreviousPage) },
+                    goBackAction = { navController.navigate("home") },
                     clearAction = {onEvent(CreateTaskEvents.ClearValues)}
                 )
             },
@@ -38,7 +40,10 @@ fun CreateTaskScreen(
                 AppBottomBar(
                     text = "Criar Task",
                     enabled = state.title.isNotBlank() && state.description.isNotBlank()
-                ) { onEvent(CreateTaskEvents.createTask) }
+                ) {
+                    onEvent(CreateTaskEvents.CreateTask)
+                    navController.navigate("home")
+                }
             }
         ) { paddingValues ->
             Column(

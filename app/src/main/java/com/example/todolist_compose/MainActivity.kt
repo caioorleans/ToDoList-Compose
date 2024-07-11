@@ -17,26 +17,20 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
+import com.example.todolist_compose.database.TaskDatabase
 import com.example.todolist_compose.ui.screens.CreateTaskScreen
 import com.example.todolist_compose.ui.screens.HomeScreen
-import com.example.todolist_compose.viewModel.CreateTaskViewModel
-import com.example.todolist_compose.viewModel.HomeViewModel
+import com.example.todolist_compose.ui.viewModel.CreateTaskViewModel
+import com.example.todolist_compose.ui.viewModel.HomeViewModel
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
-
-    private val db by lazy {
-        Room.databaseBuilder(
-            applicationContext,
-            TaskDatabase::class.java,
-            "task.db"
-        ).build()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            nav(db)
+            nav()
         }
     }
 }
@@ -45,35 +39,19 @@ val localNavController = compositionLocalOf<NavHostController> {
     error("NavController not provided") }
 
 @Composable
-fun nav(taskDatabase: TaskDatabase){
+fun nav(){
     val navController = rememberNavController()
     CompositionLocalProvider(localNavController provides navController) {
         NavHost(navController = navController, startDestination = "home"){
             composable("home"){
-                val viewModel = viewModel<HomeViewModel>(
-                    factory = object :ViewModelProvider.Factory{
-                        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                            return HomeViewModel(
-                                taskDatabase.dao, navController
-                            ) as T
-                        }
-                    }
-                )
+                val viewModel: HomeViewModel = koinViewModel()
                 val state by viewModel.state.collectAsState()
-                HomeScreen(state, viewModel::onEvent)
+                HomeScreen(state, navController, viewModel::onEvent)
             }
             composable("newTask"){
-                val viewModel = viewModel<CreateTaskViewModel>(
-                    factory = object :ViewModelProvider.Factory{
-                        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                            return CreateTaskViewModel(
-                                taskDatabase.dao, navController
-                            ) as T
-                        }
-                    }
-                )
+                val viewModel:CreateTaskViewModel = koinViewModel()
                 val state by viewModel.state.collectAsState()
-                CreateTaskScreen(state, viewModel::onEvent)
+                CreateTaskScreen(state, navController, viewModel::onEvent)
             }
         }
     }

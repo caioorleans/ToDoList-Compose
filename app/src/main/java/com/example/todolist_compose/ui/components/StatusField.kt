@@ -1,7 +1,6 @@
 package com.example.todolist_compose.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FilterChip
@@ -30,7 +29,7 @@ fun StatusField(
         for (status in TaskStatus.entries){
             FilterChip(
                 selected = taskStatus == status,
-                onClick = { onEvent(CreateTaskEvents.setStatus(status)) },
+                onClick = { onEvent(CreateTaskEvents.SetStatus(status)) },
                 label = { Text(text = status.value) },
                 colors = FilterChipDefaults.filterChipColors()
             )

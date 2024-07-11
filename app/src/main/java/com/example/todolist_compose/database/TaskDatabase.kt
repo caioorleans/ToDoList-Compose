@@ -1,8 +1,8 @@
-package com.example.todolist_compose
+package com.example.todolist_compose.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.todolist_compose.dao.TaskDao
+import com.example.todolist_compose.database.dao.TaskDao
 import com.example.todolist_compose.model.Task
 
 @Database(
@@ -10,5 +10,5 @@ import com.example.todolist_compose.model.Task
     version = 2
 )
 abstract class TaskDatabase:RoomDatabase() {
-    abstract val dao:TaskDao
+    abstract val dao: TaskDao
 }

@@ -1,22 +1,20 @@
-package com.example.todolist_compose.viewModel
+package com.example.todolist_compose.ui.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.example.todolist_compose.TaskDatabase
-import com.example.todolist_compose.dao.TaskDao
+import com.example.todolist_compose.database.dao.TaskDao
 import com.example.todolist_compose.events.CreateTaskEvents
 import com.example.todolist_compose.model.Task
 import com.example.todolist_compose.model.TaskStatus
+import com.example.todolist_compose.repository.TaskRepository
 import com.example.todolist_compose.state.TaskState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CreateTaskViewModel(
-    private val taskDao:TaskDao,
-    private val navController: NavHostController
+    private val taskRepository: TaskRepository
 ):ViewModel() {
     val state = MutableStateFlow(TaskState())
 
@@ -39,30 +37,28 @@ class CreateTaskViewModel(
                     description = event.description
                 )}
             }
-            is CreateTaskEvents.setStatus -> {
+            is CreateTaskEvents.SetStatus -> {
                 state.update { it.copy(
                     taskStatus = event.taskStatus
                 ) }
             }
-            is CreateTaskEvents.setExpirationDate -> {
+            is CreateTaskEvents.SetExpirationDate -> {
                 state.update { it.copy(
                     expirationDate = event.expirationDate
                 ) }
             }
-            CreateTaskEvents.createTask -> {
+            CreateTaskEvents.CreateTask -> {
                 val task = Task(
                     state.value.title,
                     state.value.description,
                     state.value.taskStatus,
                     state.value.expirationDate)
                 viewModelScope.launch {
-                    taskDao.upsertTask(task)
+                    taskRepository.upsertTask(task)
                 }
-                navController.popBackStack()
             }
-            CreateTaskEvents.goToPreviousPage -> {
-                navController.popBackStack()
-            }
+
+            else -> {}
         }
     }
 }

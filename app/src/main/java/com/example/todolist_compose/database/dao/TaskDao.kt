@@ -1,4 +1,4 @@
-package com.example.todolist_compose.dao
+package com.example.todolist_compose.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete

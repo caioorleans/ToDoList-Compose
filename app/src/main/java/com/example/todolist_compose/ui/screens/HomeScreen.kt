@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.todolist_compose.events.HomeEvents
 import com.example.todolist_compose.localNavController
 import com.example.todolist_compose.model.Task
@@ -50,6 +51,7 @@ import com.example.todolist_compose.ui.theme.AppTheme
 @Composable
 fun HomeScreen(
     state:HomeState,
+    navController:NavHostController,
     onEvent:(HomeEvents)->Unit,
     modifier: Modifier = Modifier
 ){
@@ -60,7 +62,7 @@ fun HomeScreen(
             },
             bottomBar = {
                 AppBottomBar(text = "Create task"
-                ) { onEvent(HomeEvents.GoToCreateTask) }
+                ) { navController.navigate("newTask") }
             }
         ) { paddingValues ->
             Column(
