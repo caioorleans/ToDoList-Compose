@@ -17,7 +17,7 @@ class TaskRepository(private val dao: TaskDao):IUserRepository {
     }
 
     override suspend fun deleteTask(task: Task) {
-        return deleteTask(task)
+        return dao.deleteTask(task)
     }
 
     override fun getTasksByStatus(taskStatus: TaskStatus): Flow<List<Task>> {
