@@ -70,14 +70,19 @@ fun HomeScreen(
                     .padding(paddingValues)
                     .padding(horizontal = 12.dp)
             ) {
-                HomeBody(state = state, onEvent = onEvent)
+                HomeBody(state = state, navController = navController, onEvent = onEvent)
             }
         }
     }
 }
 
 @Composable
-fun HomeBody(state: HomeState, onEvent:(HomeEvents)->Unit, modifier: Modifier = Modifier){
+fun HomeBody(
+    state: HomeState,
+    navController: NavHostController,
+    onEvent:(HomeEvents)->Unit,
+    modifier: Modifier = Modifier
+){
     TripleSwitch(state, onEvent)
     if (state.tasks.isEmpty()){
         EmptyListMessage(text = "É aqui que você encontrará seus projetos finalizados.")
@@ -176,7 +181,7 @@ fun HomeBody(state: HomeState, onEvent:(HomeEvents)->Unit, modifier: Modifier = 
                         ) {
                             InputChip(
                                 selected = true,
-                                onClick = { /*TODO*/ },
+                                onClick = {navController.navigate("editTask/${item.id}")},
                                 label = {
                                     Text(text = "Modificar")
                                 },

@@ -27,7 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.todolist_compose.events.CreateTaskEvents
+import com.example.todolist_compose.events.UpsertTaskEvents
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -35,7 +35,7 @@ import java.util.TimeZone
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatePickerComponent(expirationDate:Long, onEvent:(CreateTaskEvents)->Unit){
+fun DatePickerComponent(expirationDate:Long, onEvent:(UpsertTaskEvents)->Unit){
     var showDateDialog by remember {
         mutableStateOf(false)
     }
@@ -79,7 +79,7 @@ fun DatePickerComponent(expirationDate:Long, onEvent:(CreateTaskEvents)->Unit){
                     onClick = {
                         datePickerState
                             .selectedDateMillis?.let { millis ->
-                                onEvent(CreateTaskEvents.SetExpirationDate(millis))
+                                onEvent(UpsertTaskEvents.SetExpirationDate(millis))
                             }
                         showDateDialog = false
                     }) {

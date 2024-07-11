@@ -14,12 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.todolist_compose.events.CreateTaskEvents
+import com.example.todolist_compose.events.UpsertTaskEvents
 
 @Composable
 fun CustomTextField(
     textField:String,
-    onEvent:(CreateTaskEvents) -> Unit
+    onEvent:(UpsertTaskEvents) -> Unit
 ){
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -30,7 +30,7 @@ fun CustomTextField(
         )
         OutlinedTextField(
             value = textField,
-            onValueChange = {onEvent(CreateTaskEvents.SetTitle(it))},
+            onValueChange = {onEvent(UpsertTaskEvents.SetTitle(it))},
             textStyle = TextStyle(textAlign = TextAlign.Right),
             colors = OutlinedTextFieldDefaults.colors(
                 disabledBorderColor = Color.Transparent,

@@ -9,18 +9,15 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.room.Room
-import com.example.todolist_compose.database.TaskDatabase
+import com.example.todolist_compose.events.UpsertTaskEvents
 import com.example.todolist_compose.ui.screens.CreateTaskScreen
 import com.example.todolist_compose.ui.screens.HomeScreen
-import com.example.todolist_compose.ui.viewModel.CreateTaskViewModel
+import com.example.todolist_compose.ui.viewModel.UpsertTaskViewModel
 import com.example.todolist_compose.ui.viewModel.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -30,7 +27,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            nav()
+            Nav()
         }
     }
 }
@@ -39,7 +36,7 @@ val localNavController = compositionLocalOf<NavHostController> {
     error("NavController not provided") }
 
 @Composable
-fun nav(){
+fun Nav(){
     val navController = rememberNavController()
     CompositionLocalProvider(localNavController provides navController) {
         NavHost(navController = navController, startDestination = "home"){
@@ -49,9 +46,16 @@ fun nav(){
                 HomeScreen(state, navController, viewModel::onEvent)
             }
             composable("newTask"){
-                val viewModel:CreateTaskViewModel = koinViewModel()
-                val state by viewModel.state.collectAsState()
-                CreateTaskScreen(state, navController, viewModel::onEvent)
+                val viewModel:UpsertTaskViewModel = koinViewModel()
+                CreateTaskScreen(viewModel, navController, viewModel::onEvent)
+            }
+            composable("editTask/{id}"){ navBackStackEntry ->
+                val scope = rememberCoroutineScope()
+                navBackStackEntry.arguments?.getString("id")?.let { taskId ->
+                    val viewModel:UpsertTaskViewModel = koinViewModel()
+                    viewModel.onEvent(UpsertTaskEvents.SetTask(taskId.toInt()))
+                    CreateTaskScreen(viewModel, navController, viewModel::onEvent)
+                }
             }
         }
     }

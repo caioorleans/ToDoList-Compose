@@ -35,7 +35,7 @@ class HomeViewModel(
             tasks = tasks,
             selectedTaskState = status
         )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), HomeState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), HomeState())
 
     fun onEvent(event:HomeEvents){
         when(event){
