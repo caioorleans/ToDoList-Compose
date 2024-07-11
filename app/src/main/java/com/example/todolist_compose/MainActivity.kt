@@ -22,6 +22,7 @@ import com.example.todolist_compose.ui.screens.CreateTaskScreen
 import com.example.todolist_compose.ui.screens.HomeScreen
 import com.example.todolist_compose.ui.viewModel.CreateTaskViewModel
 import com.example.todolist_compose.ui.viewModel.HomeViewModel
+import kotlinx.coroutines.coroutineScope
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            nav()
+            Nav()
         }
     }
 }
@@ -39,7 +40,7 @@ val localNavController = compositionLocalOf<NavHostController> {
     error("NavController not provided") }
 
 @Composable
-fun nav(){
+fun Nav(){
     val navController = rememberNavController()
     CompositionLocalProvider(localNavController provides navController) {
         NavHost(navController = navController, startDestination = "home"){
@@ -52,6 +53,12 @@ fun nav(){
                 val viewModel:CreateTaskViewModel = koinViewModel()
                 val state by viewModel.state.collectAsState()
                 CreateTaskScreen(state, navController, viewModel::onEvent)
+            }
+            composable("editTask/{id}"){ navBackStackEntry ->
+                navBackStackEntry.arguments?.getInt("id").let {
+                    val viewModel:CreateTaskViewModel = koinViewModel()
+                    viewModel.setTask(id)
+                }
             }
         }
     }

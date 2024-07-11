@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface IUserRepository{
     suspend fun upsertTask(task:Task)
     suspend fun deleteTask(task: Task)
+    fun getTaskById(id:Int):Flow<Task>
     fun getTasksByStatus(taskStatus: TaskStatus): Flow<List<Task>>
 }
 
@@ -18,6 +19,10 @@ class TaskRepository(private val dao: TaskDao):IUserRepository {
 
     override suspend fun deleteTask(task: Task) {
         return dao.deleteTask(task)
+    }
+
+    override fun getTaskById(id: Int): Flow<Task> {
+        return dao.getTaskById(id)
     }
 
     override fun getTasksByStatus(taskStatus: TaskStatus): Flow<List<Task>> {

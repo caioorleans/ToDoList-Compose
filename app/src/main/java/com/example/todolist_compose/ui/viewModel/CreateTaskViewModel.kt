@@ -1,5 +1,6 @@
 package com.example.todolist_compose.ui.viewModel
 
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
@@ -9,7 +10,11 @@ import com.example.todolist_compose.model.Task
 import com.example.todolist_compose.model.TaskStatus
 import com.example.todolist_compose.repository.TaskRepository
 import com.example.todolist_compose.state.TaskState
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -60,5 +65,25 @@ class CreateTaskViewModel(
 
             else -> {}
         }
+    }
+
+    fun setTask(id:Int){
+        val task:Task
+        val flowTask:Flow<Task> = emptyFlow()
+        viewModelScope.launch {
+             taskRepository.getTaskById(id)
+             task:Task = flowTask.first()
+        }
+        flowTask.let {
+
+            state.update { it.copy(
+                id = task.id,
+                title = task.title,
+                description = task.description,
+                taskStatus = task.status,
+                expirationDate = task.expirationDate
+            ) }
+        }
+
     }
 }
