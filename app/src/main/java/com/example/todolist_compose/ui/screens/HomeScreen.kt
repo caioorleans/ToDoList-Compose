@@ -43,6 +43,7 @@ import com.example.todolist_compose.localNavController
 import com.example.todolist_compose.model.Task
 import com.example.todolist_compose.state.HomeState
 import com.example.todolist_compose.ui.components.AppBottomBar
+import com.example.todolist_compose.ui.components.HomeTaskCard
 import com.example.todolist_compose.ui.components.HomeTopBar
 import com.example.todolist_compose.ui.components.TripleSwitch
 import com.example.todolist_compose.ui.components.toBrazilianDateFormat
@@ -109,99 +110,9 @@ fun HomeBody(
                     )
                 }
             }
-            val fontSize = 14.sp
             items(state.tasks){ item ->
-                var isOpen by remember {
-                    mutableStateOf(false)
-                }
-                OutlinedCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth().clickable {
-                            isOpen = !isOpen
-                        }
-                    ) {
-                        Text(
-                            text = item.title,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = fontSize,
-                            modifier = Modifier.padding(12.dp)
-                        )
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowDown,
-                            contentDescription = "Open",
-                            modifier = Modifier.padding(12.dp)
-                        )
-                    }
-                    if (isOpen){
-                        Row(
-                            verticalAlignment = Alignment.Top,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(
-                                text = "Descrição",
-                                fontSize = fontSize,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(start = 12.dp, bottom = 12.dp, end = 28.dp)
-                            )
-                            Text(
-                                text = item.description,
-                                fontSize = fontSize,
-                                textAlign = TextAlign.Justify,
-                                modifier = Modifier.padding(end = 12.dp, bottom = 12.dp)
-                            )
-                        }
-                        Row(
-                            verticalAlignment = Alignment.Top,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(
-                                text = "Expira em",
-                                fontSize = fontSize,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(start = 12.dp, bottom = 12.dp)
-                            )
-                            Text(
-                                text = item.expirationDate.toBrazilianDateFormat(),
-                                fontSize = fontSize,
-                                modifier = Modifier.padding(end = 12.dp, bottom = 12.dp)
-                            )
-                        }
-                        Row(
-                            horizontalArrangement = Arrangement.End,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(end = 12.dp, bottom = 6.dp)
-                        ) {
-                            InputChip(
-                                selected = true,
-                                onClick = {navController.navigate("editTask/${item.id}")},
-                                label = {
-                                    Text(text = "Modificar")
-                                },
-                                modifier = Modifier.padding(end = 12.dp)
-                            )
-                            InputChip(
-                                selected = true,
-                                onClick = {
-                                    onEvent(HomeEvents.DeleteTask(item))
-                                },
-                                label = {
-                                    Text(text = "Excluir")
-                                },
-                                colors = InputChipDefaults.inputChipColors(
-                                    containerColor = Color.Red,
-                                    selectedContainerColor = Color.Red
-                                )
-                            )
-                        }
-                    }
+                HomeTaskCard(task = item, navController = navController) {
+                    onEvent(HomeEvents.DeleteTask(item))
                 }
             }
         }
