@@ -35,18 +35,19 @@ fun CreateTaskScreen(
             topBar = {
                 OtherTopAppBar(
                     modifier = Modifier.padding(horizontal = 12.dp),
-                    goBackAction = { navController.navigate("home") },
+                    goBackAction = { navController.popBackStack() },
                     clearAction = {onEvent(UpsertTaskEvents.ClearValues)}
                 )
             },
             bottomBar = {
                 AppBottomBar(
                     text = if(state.update) "Atualizar task" else "Criar Task",
-                    enabled = state.title.isNotBlank() && state.description.isNotBlank()
+                    enabled = state.title.isNotBlank()
+                            && System.currentTimeMillis() - state.expirationDate < 86400000
                 ) {
                     if(state.update) onEvent(UpsertTaskEvents.UpdateTask)
                     else onEvent(UpsertTaskEvents.CreateTask)
-                    navController.navigate("home")
+                    navController.popBackStack()
                 }
             }
         ) { paddingValues ->

@@ -38,13 +38,15 @@ class HomeViewModel(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), HomeState())
 
     fun onEvent(event:HomeEvents){
-        when(event){
-            is HomeEvents.SortTasks -> {
-                _status.update { event.taskStatus }
-            }
-            is HomeEvents.DeleteTask -> {
-                viewModelScope.launch {
-                    taskRepository.deleteTask(event.task)
+        viewModelScope.launch {
+            when(event){
+                is HomeEvents.SortTasks -> {
+                    _status.update { event.taskStatus }
+                }
+                is HomeEvents.DeleteTask -> {
+                    viewModelScope.launch {
+                        taskRepository.deleteTask(event.task)
+                    }
                 }
             }
         }

@@ -41,6 +41,7 @@ import androidx.navigation.NavHostController
 import com.example.todolist_compose.events.HomeEvents
 import com.example.todolist_compose.localNavController
 import com.example.todolist_compose.model.Task
+import com.example.todolist_compose.model.TaskStatus
 import com.example.todolist_compose.state.HomeState
 import com.example.todolist_compose.ui.components.AppBottomBar
 import com.example.todolist_compose.ui.components.HomeTaskCard
@@ -81,12 +82,15 @@ fun HomeScreen(
 fun HomeBody(
     state: HomeState,
     navController: NavHostController,
-    onEvent:(HomeEvents)->Unit,
-    modifier: Modifier = Modifier
+    onEvent:(HomeEvents)->Unit
 ){
     TripleSwitch(state, onEvent)
     if (state.tasks.isEmpty()){
-        EmptyListMessage(text = "É aqui que você encontrará seus projetos finalizados.")
+        EmptyListMessage(text = when(state.selectedTaskState){
+            TaskStatus.TO_DO -> "É aqui que você encontrará suas tarefas não iniciadas."
+            TaskStatus.DOING -> "É aqui que você encontrará suas tarefas em andamento."
+            TaskStatus.DONE -> "É aqui que você encontrará suas tarefas finalizadas."
+        })
     }
     else {
         LazyColumn(
@@ -106,11 +110,15 @@ fun HomeBody(
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = "Itens marcados como concluídos",
+                        text = when(state.selectedTaskState){
+                            TaskStatus.TO_DO -> "Itens ainda não iniciados"
+                            TaskStatus.DOING -> "Itens marcados como em andamento"
+                            TaskStatus.DONE -> "Itens marcados como concluídos"
+                        },
                     )
                 }
             }
-            items(state.tasks){ item ->
+            items(items = state.tasks, key = {item: Task -> item.id!! }){ item ->
                 HomeTaskCard(task = item, navController = navController) {
                     onEvent(HomeEvents.DeleteTask(item))
                 }
@@ -152,12 +160,5 @@ fun EmptyListMessage(text:String, modifier:Modifier = Modifier){
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 20.dp)
         )
-        Button(
-            onClick = { /*TODO*/ },
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            Text(text = "Criar uma task")
-        }
     }
-
 }

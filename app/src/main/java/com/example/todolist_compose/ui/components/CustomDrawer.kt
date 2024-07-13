@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CustomDrawer(title:String, action: @Composable ()->Unit = {}){
     var isOpen by remember {
-        mutableStateOf(false)
+        mutableStateOf(true)
     }
     val modifier = Modifier.clickable { isOpen = !isOpen}
     Row(

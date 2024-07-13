@@ -3,6 +3,7 @@ package com.example.todolist_compose.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +25,7 @@ fun AppBottomBar(text: String, enabled:Boolean = true, action: ()->Unit) {
             .navigationBarsPadding()
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
+            .imePadding()
     ) {
         Button(
             onClick = { action() },

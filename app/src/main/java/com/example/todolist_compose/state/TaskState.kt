@@ -7,6 +7,6 @@ data class TaskState(
     val title:String = "",
     val description:String = "",
     val taskStatus: TaskStatus = TaskStatus.TO_DO,
-    val expirationDate:Long = 0,
+    val expirationDate:Long = System.currentTimeMillis(),
     val update:Boolean = false
 )
