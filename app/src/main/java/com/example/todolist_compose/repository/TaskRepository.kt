@@ -10,6 +10,7 @@ interface IUserRepository{
     suspend fun updateTask(task:Task)
     suspend fun deleteTask(task: Task)
     fun getTaskById(id:Int):Flow<Task>
+    fun getTaskLikeTitleOrDescription(text:String):Flow<List<Task>>
     fun getTasksByStatus(taskStatus: TaskStatus): Flow<List<Task>>
 }
 
@@ -28,6 +29,10 @@ class TaskRepository(private val dao: TaskDao):IUserRepository {
 
     override fun getTaskById(id: Int): Flow<Task> {
         return dao.getTaskById(id)
+    }
+
+    override fun getTaskLikeTitleOrDescription(text: String): Flow<List<Task>> {
+        return dao.getTaskLikeTitleOrDescription(text)
     }
 
     override fun getTasksByStatus(taskStatus: TaskStatus): Flow<List<Task>> {

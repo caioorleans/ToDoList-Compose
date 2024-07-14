@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.todolist_compose.events.HomeEvents
-import com.example.todolist_compose.localNavController
 import com.example.todolist_compose.model.Task
 import com.example.todolist_compose.model.TaskStatus
 import com.example.todolist_compose.state.HomeState
@@ -60,7 +59,7 @@ fun HomeScreen(
     AppTheme{
         Scaffold(
             topBar = {
-                HomeTopBar(modifier.padding(horizontal = 12.dp))
+                HomeTopBar(navController, modifier.padding(horizontal = 12.dp))
             },
             bottomBar = {
                 AppBottomBar(text = "Create task"

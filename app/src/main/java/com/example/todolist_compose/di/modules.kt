@@ -5,6 +5,7 @@ import com.example.todolist_compose.database.TaskDatabase
 import com.example.todolist_compose.repository.TaskRepository
 import com.example.todolist_compose.ui.viewModel.UpsertTaskViewModel
 import com.example.todolist_compose.ui.viewModel.HomeViewModel
+import com.example.todolist_compose.ui.viewModel.SearchTaskViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
@@ -14,6 +15,7 @@ val appModule = module {
     singleOf(::TaskRepository)
     viewModelOf(::HomeViewModel)
     viewModelOf(::UpsertTaskViewModel)
+    viewModelOf(::SearchTaskViewModel)
 }
 
 val storageModule = module{

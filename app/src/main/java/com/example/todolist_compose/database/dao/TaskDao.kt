@@ -25,6 +25,10 @@ interface TaskDao {
     @Query("select * from task where task.id = :id")
     fun getTaskById(id:Int):Flow<Task>
 
+    @Query("select * from task where task.title like '%'||:text||'%' " +
+            "or task.description like '%'||:text||'%'")
+    fun getTaskLikeTitleOrDescription(text:String):Flow<List<Task>>
+
     @Query("select * from task where task.status = :status")
     fun getTasksByStatus(status: TaskStatus):Flow<List<Task>>
 }
